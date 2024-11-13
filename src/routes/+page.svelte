@@ -9,8 +9,10 @@
     import { createClient } from '@supabase/supabase-js';
     import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
     import { onMount } from 'svelte';
+    import { getOrCreateUser } from '$lib/user';
 
-    let userData = $state(null);
+    let userEmail: string = $state('');
+    let userId = $state();
 
     onMount(() => {
         const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
@@ -21,9 +23,17 @@
             const { data, error } = await supabase.auth.signInWithIdToken({
                 provider: 'google',
                 token: response.credential,
-            })
+            });
 
-            userData = (data.user?.user_metadata.name);
+            if (error) {
+                console.error('Error logging in with Google:', error.message);
+                return;
+            }
+
+            userEmail = (data.user?.email) || '';
+            if (userEmail) {
+                getOrCreateUser(supabase, userEmail);
+            }
         };
 
         // Load the Google Sign-In library
@@ -115,9 +125,9 @@
 			</svelte:fragment>
 			<h2 class="h2 font-bold">Pomo Farm</h2>
 			<svelte:fragment slot="trail">
-                {#if !userData}
-                    <div id="g_id_onload"></div>
-                    <div id="g_id_signin"></div>
+                {#if !userEmail}
+                <div id="g_id_onload"></div>
+                <div id="g_id_signin"></div>
                 {/if}
 			</svelte:fragment>
 		</AppBar>
@@ -125,8 +135,8 @@
 
 	<div class="card p-4">
 		<header class="card-header">
-            {#if userData}
-                <h3 class="h3">Welcome, {userData}!</h3>
+            {#if userEmail}
+                <h3 class="h3">Welcome, {userEmail}!</h3>
             {:else}
                 <h3 class="h3">Welcome, Farmer!</h3>
             {/if}
