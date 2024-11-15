@@ -165,31 +165,31 @@
 	</header>
 
 	{#key user}
-	<div class="card p-4">
-		<header class="card-header">
-			{#if userEmail && userEmail === username}
-				<h3 class="h3">Nice to meet you, Farmer!</h3>
-				<button class="variant-filled btn" onclick={() => usernameForm(userId)}>
-					<span><i class="fa-regular fa-clipboard"></i></span>
-					<span>Farmer Registration</span>
-				</button>
-			{:else if username}
-				<h3 class="h3">Welcome back, {username}!</h3>
-			{:else}
-				<h3 class="h3">Welcome, Farmer!</h3>
+		<div class="card p-4">
+			<header class="card-header">
+				{#if userEmail && userEmail === username}
+					<h3 class="h3">Nice to meet you, Farmer!</h3>
+					<button class="variant-filled btn" onclick={() => usernameForm(userId)}>
+						<span><i class="fa-regular fa-clipboard"></i></span>
+						<span>Farmer Registration</span>
+					</button>
+				{:else if username}
+					<h3 class="h3">Welcome back, {username}!</h3>
+				{:else}
+					<h3 class="h3">Welcome, Farmer!</h3>
+				{/if}
+			</header>
+			<section class="p-4">Current time: {now.toUTCString()}</section>
+			{#if disabled}
+				<footer class="card-footer">
+					End time: {end.toUTCString()}
+					<ProgressBar value={remainingPct} max={100} />
+				</footer>
 			{/if}
-		</header>
-		<section class="p-4">Current time: {now.toUTCString()}</section>
-		{#if disabled}
-			<footer class="card-footer">
-				End time: {end.toUTCString()}
-				<ProgressBar value={remainingPct} max={100} />
-			</footer>
-		{/if}
-		{#if done}
-			<footer class="card-footer">Done!</footer>
-		{/if}
-	</div>
+			{#if done}
+				<footer class="card-footer">Done!</footer>
+			{/if}
+		</div>
 	{/key}
 
 	<button {disabled} type="button" class="variant-filled btn btn-lg" onclick={() => setTimer()}>
