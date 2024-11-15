@@ -10,7 +10,7 @@ export type User = {
     updatedAt: Date;
 }
 
-export async function updateUser(supabase: SupabaseClient, id: UUID, payload: any): Promise<void> {
+export async function updateUser(supabase: SupabaseClient, id: UUID, payload: any): Promise<User> {
     console.log('Updating user', id, payload);
     const { data, error } = await supabase
         .from('Users')
@@ -23,7 +23,8 @@ export async function updateUser(supabase: SupabaseClient, id: UUID, payload: an
         throw error;
     }
 
-    console.log(data);
+    console.log(data[0]);
+    return data[0];
 }
 
 export async function getOrCreateUser(supabase: SupabaseClient, email: string): Promise<User> {
