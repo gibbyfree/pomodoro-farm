@@ -1,10 +1,7 @@
 <script lang="ts">
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
-	import {
-		AppBar,
-		ProgressBar,
-	} from '@skeletonlabs/skeleton';
+	import { AppBar, Progress } from '@skeletonlabs/skeleton-svelte';
 
     import { createClient } from '@supabase/supabase-js';
     import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
@@ -120,32 +117,31 @@
 <main class="p-4 space-y-4">
 	<header class="p4">
 		<AppBar>
-			<svelte:fragment slot="lead">
-				<i class="fa-solid fa-wheat-awn"></i>
-			</svelte:fragment>
-			<h2 class="h2 font-bold">Pomo Farm</h2>
-			<svelte:fragment slot="trail">
+			{#snippet trail()}
                 {#if !userEmail}
                 <div id="g_id_onload"></div>
                 <div id="g_id_signin"></div>
                 {/if}
-			</svelte:fragment>
+			{/snippet}
+			<h2 class="h2 font-bold">
+				Pomo Farm <i class="fa-solid fa-wheat-awn"></i>
+			</h2>
 		</AppBar>
 	</header>
 
-	<div class="card p-4">
-		<header class="card-header">
+	<div class="preset-filled-surface-100-900 border-[1px] border-surface-200-800 w-full max-w-md p-4 text-center">
+		<header>
             {#if userEmail}
                 <h3 class="h3">Welcome, {userEmail}!</h3>
             {:else}
                 <h3 class="h3">Welcome, Farmer!</h3>
             {/if}
         </header>
-		<section class="p-4">Current time: {now.toUTCString()}</section>
+		<article class="p-4">Current time: {now.toUTCString()}</article>
 		{#if disabled}
 			<footer class="card-footer">
 				End time: {end.toUTCString()}
-				<ProgressBar value={remainingPct} max={100} />
+				<Progress value={remainingPct} max={100} />
 			</footer>
 		{/if}
 		{#if done}
@@ -153,7 +149,7 @@
 		{/if}
 	</div>
 
-	<button {disabled} type="button" class="btn variant-filled btn-lg" onclick={() => setTimer()}>
+	<button {disabled} type="button" class="btn preset-filled-tertiary-500" onclick={() => setTimer()}>
 		<span> <i class="fa-regular fa-tractor"> </i></span>
 		<span>Set Timer</span>
 	</button>
