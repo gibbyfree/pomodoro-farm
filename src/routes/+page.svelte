@@ -3,20 +3,27 @@
 
 	import {
 		AppBar,
+		getModalStore,
 		ProgressBar,
+		Modal
 	} from '@skeletonlabs/skeleton';
+
+	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 
     import { createClient } from '@supabase/supabase-js';
     import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public'
     import { onMount } from 'svelte';
-    import { getOrCreateUser } from '$lib/user';
+
+    import FormModal from '$lib/components/FormModal.svelte';
+	import { getOrCreateUser, updateUser } from '$lib/user';
+
+	const modalStore = getModalStore();
+	const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
     let userEmail: string = $state('');
     let userId = $state();
 
     onMount(() => {
-        const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
-
         // Define the handleSignInWithGoogle function
         // @ts-ignore
         window.handleSignInWithGoogle = async function (response) {     
@@ -32,7 +39,8 @@
 
             userEmail = (data.user?.email) || '';
             if (userEmail) {
-                getOrCreateUser(supabase, userEmail);
+                let user = await getOrCreateUser(supabase, userEmail);
+				userId = user.id;
             }
         };
 
@@ -67,6 +75,7 @@
     });
 
 	// Normal pomodoro: 25mins. For dev, 1.
+	// BACKEND 
 	const timerMins = 1;
 	const maxRemaining = timerMins * 60 * 1000;
 
@@ -115,7 +124,27 @@
 			return newEnd;
 		}
 	}
+	
+	// END BACKEND
+
+
+	// UI
+	function usernameForm(userId: any): void {
+		const c: ModalComponent = { ref: FormModal };
+		const modal: ModalSettings = {
+			type: 'component',
+			component: c,
+			title: 'Howdy, stranger! What should we call you?',
+			body: '',
+			response: (r) => {
+				updateUser(supabase, userId, r);
+			}
+		};
+		modalStore.trigger(modal);
+	}
+	
 </script>
+<Modal />
 
 <main class="p-4 space-y-4">
 	<header class="p4">
@@ -135,8 +164,9 @@
 
 	<div class="card p-4">
 		<header class="card-header">
-            {#if userEmail}
-                <h3 class="h3">Welcome, {userEmail}!</h3>
+            {#if userId}
+                <h3 class="h3">Welcome, {userId}!</h3>
+				<button class="btn variant-filled" onclick={() => usernameForm(userId)}>Form</button>
             {:else}
                 <h3 class="h3">Welcome, Farmer!</h3>
             {/if}
