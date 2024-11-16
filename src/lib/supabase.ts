@@ -19,3 +19,7 @@ export async function getSession(): Promise<any> {
 
     return session.data.session;
 }
+
+export async function logoutUser(): Promise<void> {
+    await supabase.auth.signOut();
+}

@@ -2,11 +2,11 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
-	import { AppBar, getModalStore, ProgressBar, Modal } from '@skeletonlabs/skeleton';
+	import { AppBar, getModalStore, popup, ProgressBar, Modal } from '@skeletonlabs/skeleton';
 	import FormModal from '$lib/components/FormModal.svelte';
 
 	// Types
-	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton';
 	import type { User } from '$lib/user';
 
 	// Functions
@@ -18,6 +18,11 @@
 	import { supabase } from '$lib/supabase';
 
 	const modalStore = getModalStore();
+	const popupHover: PopupSettings = {
+		event: 'hover',
+		target: 'popupHover',
+		placement: 'top'
+	};
 
 	let user: User | Record<string, never> = $state({});
 	let userEmail: string = $derived(user.email);
@@ -43,7 +48,7 @@
 				console.error('Error logging in with Google:', error.message);
 				return;
 			}
-			
+
 			// Get user data
 			user = data.user as unknown as User;
 			if (userEmail) {
@@ -144,6 +149,11 @@
 		}
 	}
 
+	async function logout() {
+		await supabase.auth.signOut();
+		user = {};
+	}
+
 	// END BACKEND
 
 	// UI
@@ -168,7 +178,7 @@
 	<header class="p4">
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<i class="fa-solid fa-wheat-awn"></i>
+				<i class="fa-solid fa-wheat-awn text-xl"></i>
 			</svelte:fragment>
 			<h2 class="h2 font-bold">Pomo Farm</h2>
 			<svelte:fragment slot="trail">
@@ -176,7 +186,17 @@
 					<div id="g_id_onload"></div>
 					<div id="g_id_signin"></div>
 				{:else if username}
-					<span>{username}</span>
+					<span class="text-xl">{username}</span>
+					<button
+						aria-label="Logout"
+						class="variant-filled btn [&>*]:pointer-events-none"
+						use:popup={popupHover}
+						onclick={() => logout()}
+					>
+						<span>
+							<i class="fa-solid fa-right-from-bracket"></i>
+						</span>
+					</button>
 				{/if}
 			</svelte:fragment>
 		</AppBar>
@@ -215,3 +235,8 @@
 		<span>Set Timer</span>
 	</button>
 </main>
+
+<div class="card variant-filled-secondary p-4" data-popup="popupHover">
+	<p>Logout</p>
+	<div class="variant-filled-secondary arrow"></div>
+</div>
