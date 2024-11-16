@@ -27,7 +27,7 @@ export async function updateUser(supabase: SupabaseClient, id: UUID, payload: an
     return data[0];
 }
 
-export async function getOrCreateUser(supabase: SupabaseClient, email: string): Promise<User> {
+export async function getOrCreateUser(supabase: SupabaseClient, email: string): Promise<User | Record<string, never>> {
     const { data, error } = await supabase
         .from('Users')
         .select('*')
@@ -35,7 +35,7 @@ export async function getOrCreateUser(supabase: SupabaseClient, email: string): 
 
     if (error) {
         console.log(error.message);
-        throw error;
+        return {};
     }
 
     if (data.length === 0) {
@@ -46,20 +46,20 @@ export async function getOrCreateUser(supabase: SupabaseClient, email: string): 
     }
 }
 
-async function createUser(supabase: SupabaseClient, email: string): Promise<User> {
+async function createUser(supabase: SupabaseClient, email: string): Promise<User | Record<string, never>> {
     let { data, error } = await supabase
-            .from('Users')
-            .insert({
-                email: email,
-                username: email,
-                profile: {},
-            })
-            .single();
+        .from('Users')
+        .insert({
+            email: email,
+            username: email,
+            profile: {},
+        })
+        .single();
 
-        if (error) {
-            console.log(error.message);
-            throw error;
-        }
+    if (error) {
+        console.log(error.message);
+        return {};
+    }
 
     return getOrCreateUser(supabase, email);
 }
