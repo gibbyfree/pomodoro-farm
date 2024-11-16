@@ -20,7 +20,7 @@
 		if ($modalStore[0].response) $modalStore[0].response(formData);
 		modalStore.close();
 	}
-
+	
 	// Base Classes
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
 	const cHeader = 'text-2xl font-bold';

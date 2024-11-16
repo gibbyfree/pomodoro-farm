@@ -1,26 +1,29 @@
 <script lang="ts">
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
+	// Components
 	import { AppBar, getModalStore, ProgressBar, Modal } from '@skeletonlabs/skeleton';
+	import FormModal from '$lib/components/FormModal.svelte';
 
+	// Types
 	import type { ModalSettings, ModalComponent } from '@skeletonlabs/skeleton';
 	import type { User } from '$lib/user';
 
-	import { createClient } from '@supabase/supabase-js';
-	import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+	// Functions
+	import { getOrCreateUser, updateUser } from '$lib/user';
 	import { onMount } from 'svelte';
 
-	import FormModal from '$lib/components/FormModal.svelte';
-	import { getOrCreateUser, updateUser } from '$lib/user';
+	// Objects
+	import { supabase } from '$lib/supabase';
 
 	const modalStore = getModalStore();
-	const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY);
 
 	let user: User | Record<string, never> = $state({});
 	let userEmail: string = $derived(user.email);
 	let userId: string = $derived(user.id);
 	let username: string = $derived(user.username);
 
+	///////////////////// GOOGLE AUTH //////////////////////////
 	onMount(() => {
 		// Define the handleSignInWithGoogle function
 		// @ts-ignore
