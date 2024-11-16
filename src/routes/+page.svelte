@@ -11,6 +11,7 @@
 
 	// Functions
 	import { getOrCreateUser, updateUser } from '$lib/user';
+	import { getSession } from '$lib/supabase';
 	import { onMount } from 'svelte';
 
 	// Objects
@@ -25,6 +26,11 @@
 
 	///////////////////// GOOGLE AUTH //////////////////////////
 	onMount(() => {
+		// Check if user is already signed in
+		if (!userEmail) {
+			getLoggedInUser();
+		}
+
 		// Define the handleSignInWithGoogle function
 		// @ts-ignore
 		window.handleSignInWithGoogle = async function (response) {
@@ -37,7 +43,8 @@
 				console.error('Error logging in with Google:', error.message);
 				return;
 			}
-
+			
+			// Get user data
 			user = data.user as unknown as User;
 			if (userEmail) {
 				user = await getOrCreateUser(supabase, userEmail);
@@ -73,6 +80,7 @@
 		};
 		document.body.appendChild(script);
 	});
+	///////////////////// GOOGLE AUTH //////////////////////////
 
 	// Normal pomodoro: 25mins. For dev, 1.
 	// BACKEND
@@ -127,6 +135,13 @@
 
 	async function registerUser(userId: any, r: Record<string, any>) {
 		user = await updateUser(supabase, userId, r);
+	}
+
+	async function getLoggedInUser() {
+		let session = await getSession();
+		if (session) {
+			user = await getOrCreateUser(supabase, session.user.email);
+		}
 	}
 
 	// END BACKEND
