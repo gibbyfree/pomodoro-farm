@@ -2,7 +2,7 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
-	import { AppBar, getModalStore, popup, ProgressBar, Modal } from '@skeletonlabs/skeleton';
+	import { AppBar, getModalStore, popup, ProgressRadial, Modal } from '@skeletonlabs/skeleton';
 	import FormModal from '$lib/components/FormModal.svelte';
 
 	// Types
@@ -89,15 +89,23 @@
 
 	// Normal pomodoro: 25mins. For dev, 1.
 	// BACKEND
-	const timerMins = 1;
+	const timerMins = 25;
 	const maxRemaining = timerMins * 60 * 1000;
 
 	let now = $state(new Date());
 	let end = $state(new Date());
 	let remaining = $state(0);
 
-	let remainingPct = $derived.by(() => {
-		return Math.floor((remaining / maxRemaining) * 100);
+    let completedPct = $derived.by(() => {
+        return Math.floor(((maxRemaining - remaining) / maxRemaining) * 100);
+    });
+
+	let remainingMins = $derived.by(() => {
+		return Math.floor(remaining / 60000);
+	});
+
+	let remainingSecs = $derived.by(() => {
+		return Math.floor((remaining % 60000) / 1000);
 	});
 
 	let done = $state(false);
@@ -175,6 +183,7 @@
 <Modal />
 
 <main class="space-y-4 p-4">
+	{#key user}
 	<header class="p4">
 		<AppBar>
 			<svelte:fragment slot="lead">
@@ -202,7 +211,6 @@
 		</AppBar>
 	</header>
 
-	{#key user}
 		<div class="card p-4">
 			<header class="card-header">
 				{#if userEmail && userEmail === username}
@@ -217,11 +225,15 @@
 					<h3 class="h3">Welcome, Farmer!</h3>
 				{/if}
 			</header>
-			<section class="p-4">Current time: {now.toUTCString()}</section>
+			<section class="p-4">
+				Current time: {now.toUTCString()}
+			</section>
 			{#if disabled}
 				<footer class="card-footer">
 					End time: {end.toUTCString()}
-					<ProgressBar value={remainingPct} max={100} />
+					<ProgressRadial value={completedPct} max={100}>
+						{remainingMins}m {remainingSecs}s
+					</ProgressRadial>
 				</footer>
 			{/if}
 			{#if done}
