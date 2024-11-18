@@ -1,13 +1,13 @@
 <script lang="ts">
 	///////////////////// IMPORTS ///////////////////// 
 	import '../app.css';
-	import { initializeStores } from '@skeletonlabs/skeleton';
+	import { initializeStores, storePopup } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
-	import { AppBar, getModalStore, popup, ProgressRadial, Modal } from '@skeletonlabs/skeleton';
+	import { AppBar, getModalStore, popup, Modal } from '@skeletonlabs/skeleton';
 	import FormModal from '$lib/components/FormModal.svelte';
 
 	// Types
@@ -27,6 +27,8 @@
 
 	initializeStores();
 	const modalStore = getModalStore();
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
 	let { children }: { children: Snippet } = $props();
 
 	const popupHover: PopupSettings = {
