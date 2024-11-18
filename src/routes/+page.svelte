@@ -6,12 +6,9 @@
 
 	// Types
 	import type { User } from '$lib/types';
-	import type { PageData } from './$types';
 
 	// Objects
 	import { cUser } from '$lib/state/user.svelte';
-
-	const modalStore = getModalStore();
 
 	let user: User | Record<string, never> = cUser.get;
 
@@ -96,8 +93,8 @@
 		{/if}
 	</div>
 
-	<button {disabled} type="button" class="variant-filled btn btn-lg" onclick={() => setTimer()}>
-		<span> <i class="fa-regular fa-tractor"> </i></span>
+	<button {disabled} type="button" class="variant-filled btn btn-lg m-4" onclick={() => setTimer()}>
+		<span> <i class="fa-solid fa-tractor"> </i></span>
 		<span>Set Timer</span>
 	</button>
 {/if}

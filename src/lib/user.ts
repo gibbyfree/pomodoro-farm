@@ -2,6 +2,25 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { UUID } from "crypto";
 import type { User } from "./types";
 
+export async function findUser(supabase: SupabaseClient, username: string): Promise<User | undefined> {
+    const { data, error } = await supabase
+        .from('Users')
+        .select('*')
+        .eq('username', username);
+
+    if (error) {
+        console.log(error.message);
+        return undefined;
+    }
+
+    if (data.length === 0) {
+        return undefined;
+    } else {
+        console.log(data[0]);
+        return data[0];
+    }
+}
+
 export async function updateUser(supabase: SupabaseClient, id: UUID, payload: any): Promise<User> {
     console.log('Updating user', id, payload);
     const { data, error } = await supabase

@@ -1,5 +1,5 @@
 <script lang="ts">
-	///////////////////// IMPORTS ///////////////////// 
+	///////////////////// IMPORTS /////////////////////
 	import '../app.css';
 	import { initializeStores, storePopup } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
@@ -8,6 +8,7 @@
 
 	// Components
 	import { AppBar, getModalStore, popup, Modal } from '@skeletonlabs/skeleton';
+	import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
 	import FormModal from '$lib/components/FormModal.svelte';
 
 	// Types
@@ -30,6 +31,7 @@
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	let { children }: { children: Snippet } = $props();
+	let currentTile: number = 0;
 
 	const popupHover: PopupSettings = {
 		event: 'hover',
@@ -60,7 +62,7 @@
 			// Get user data
 			let googleUser = data.user as unknown as User;
 			if (googleUser.email) {
-				cUser.set = await getOrCreateUser(supabase, googleUser.email) as User;
+				cUser.set = (await getOrCreateUser(supabase, googleUser.email)) as User;
 			}
 		};
 
@@ -113,7 +115,7 @@
 	async function getLoggedInUser(): Promise<User | Record<string, never>> {
 		let session = await getSession();
 		if (session) {
-			cUser.set = await getOrCreateUser(supabase, session.user.email) as User;
+			cUser.set = (await getOrCreateUser(supabase, session.user.email)) as User;
 		}
 		return {};
 	}
@@ -132,21 +134,48 @@
 		modalStore.trigger(modal);
 	}
 
-	console.log("bottom of layout", cUser.get);
+	console.log('bottom of layout', cUser.get);
 </script>
 
 <Modal />
+
 {#key cUser.get}
-	<main class="space-y-4 p-4">
-		<header class="p4">
+	<main class="grid grid-cols-12 grid-rows-6 gap-4">
+		<AppRail class="row-span-6 col-span-1 row-start-1">
+			<svelte:fragment slot="lead">
+				<AppRailAnchor href="/">(icon)</AppRailAnchor>
+			</svelte:fragment>
+			<!-- --- -->
+			<AppRailTile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
+				<svelte:fragment slot="lead">(icon)</svelte:fragment>
+				<span>Tile 1</span>
+			</AppRailTile>
+			<AppRailTile bind:group={currentTile} name="tile-2" value={1} title="tile-2">
+				<svelte:fragment slot="lead">(icon)</svelte:fragment>
+				<span>Tile 2</span>
+			</AppRailTile>
+			<AppRailTile bind:group={currentTile} name="tile-3" value={2} title="tile-3">
+				<svelte:fragment slot="lead">(icon)</svelte:fragment>
+				<span>Tile 3</span>
+			</AppRailTile>
+			<!-- --- -->
+			<svelte:fragment slot="trail">
+				<AppRailAnchor href="/" target="_blank" title="Account">(icon)</AppRailAnchor>
+			</svelte:fragment>
+		</AppRail>
+
+		<header class="col-start-2 row-start-1 col-span-10">
 			<AppBar>
 				<svelte:fragment slot="lead">
-					<i class="fa-solid fa-wheat-awn text-xl"></i>
+					<h2 class="h2 font-bold">
+						<i class="fa-solid fa-wheat-awn text-xl"></i>
+						Pomo Farm
+					</h2>
 				</svelte:fragment>
-				<h2 class="h2 font-bold">Pomo Farm</h2>
 				<svelte:fragment slot="trail">
 					{#if cUser.email}
-						<span class="text-xl">{cUser.username}</span>
+						<span class="text-xl">lv.61 {cUser.username}</span>
+						<span> 💰5432 </span>
 						<button
 							aria-label="Logout"
 							class="variant-filled btn [&>*]:pointer-events-none"
@@ -162,37 +191,39 @@
 			</AppBar>
 		</header>
 
+		<div class="row-start-2 col-start-2 col-span-10 row-span-5">
+			{#if !cUser.email && !cUser.username}
+				<div class="card p-4">
+					<header class="card-header">
+						<h3 class="h3">Welcome to Pomo Farm! Sign in with Google continue.</h3>
+					</header>
+					<section class="p-4" id="google-btn-wrapper">
+						<div id="g_id_onload"></div>
+						<div id="g_id_signin"></div>
+					</section>
+				</div>
+				<!-- Unregistered user -->
+			{:else if cUser.email && cUser.email === cUser.username}
+				<div class="card p-4">
+					<header class="card-header">
+						<h3 class="h3">Nice to meet you, Farmer!</h3>
+					</header>
+					<section class="p-4">
+						<span>Complete your farmer registration form:</span>
+					</section>
+					<footer class="card-footer">
+						<button class="variant-filled btn" onclick={() => usernameForm(cUser.id)}>
+							<span><i class="fa-regular fa-clipboard"></i></span>
+							<span>Farmer Registration</span>
+						</button>
+					</footer>
+				</div>
+				<!-- Registered and signed in -->
+			{:else if cUser.username !== cUser.email}
+				{@render children()}
+			{/if}
+		</div>
 		<!-- No user -->
-		{#if !cUser.email && !cUser.username}
-			<div class="card p-4">
-				<header class="card-header">
-					<h3 class="h3">Welcome to Pomo Farm! Sign in with Google continue.</h3>
-				</header>
-				<section class="p-4" id="google-btn-wrapper">
-					<div id="g_id_onload"></div>
-					<div id="g_id_signin"></div>
-				</section>
-			</div>
-			<!-- Unregistered user -->
-		{:else if cUser.email && cUser.email === cUser.username}
-			<div class="card p-4">
-				<header class="card-header">
-					<h3 class="h3">Nice to meet you, Farmer!</h3>
-				</header>
-				<section class="p-4">
-					<span>Complete your farmer registration form:</span>
-				</section>
-				<footer class="card-footer">
-					<button class="variant-filled btn" onclick={() => usernameForm(cUser.id)}>
-						<span><i class="fa-regular fa-clipboard"></i></span>
-						<span>Farmer Registration</span>
-					</button>
-				</footer>
-			</div>
-			<!-- Registered and signed in -->
-		{:else if cUser.username !== cUser.email}
-			{@render children()}
-		{/if}
 
 		<div class="card variant-filled-secondary p-4" data-popup="popupHover">
 			<p>Logout</p>
