@@ -2,33 +2,18 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
-	import { AppBar, getModalStore, popup, ProgressRadial, Modal } from '@skeletonlabs/skeleton';
-	import FormModal from '$lib/components/FormModal.svelte';
+	import { getModalStore, ProgressRadial } from '@skeletonlabs/skeleton';
 
 	// Types
-	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton';
-	import type { User } from '$lib/user';
+	import type { User } from '$lib/types';
 	import type { PageData } from './$types';
 
-	// Functions
-	import { getOrCreateUser, updateUser } from '$lib/user';
-	import { getSession } from '$lib/supabase';
-	import { onMount } from 'svelte';
-
 	// Objects
-	import { supabase } from '$lib/supabase';
-	import { page } from '$app/stores';
+	import { cUser } from '$lib/state/user.svelte';
 
 	const modalStore = getModalStore();
 
-	let { data }: { data: PageData } = $props();
-
-	console.log(data);
-
-	let user: User | Record<string, never> = $derived(data.user);
-	let userEmail: string = $derived(user.email);
-	let userId: string = $derived(user.id);
-	let username: string = $derived(data.user.username);
+	let user: User | Record<string, never> = cUser.get;
 
 	// Normal pomodoro: 25mins. For dev, 1.
 	// BACKEND
@@ -90,10 +75,10 @@
 	}
 </script>
 
-{#if username}
+{#if user.username}
 	<div class="card p-4">
 		<header class="card-header">
-			<h3 class="h3">Welcome back, {username}!</h3>
+			<h3 class="h3">Welcome back, {user.username}!</h3>
 		</header>
 		<section class="p-4">
 			Current time: {now.toUTCString()}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	///////////////////// IMPORTS ///////////////////// 
 	import '../app.css';
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
@@ -11,9 +12,8 @@
 
 	// Types
 	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton';
-	import type { User } from '$lib/user';
-	import type { LayoutServerLoad, LayoutData } from './$types';
 	import type { Snippet } from 'svelte';
+	import type { User } from '$lib/types';
 
 	// Functions
 	import { getOrCreateUser, updateUser } from '$lib/user';
@@ -21,15 +21,13 @@
 
 	// Objects
 	import { getSession, supabase } from '$lib/supabase';
+	import { cUser } from '$lib/state/user.svelte';
+
+	///////////////////// END IMPORTS /////////////////////
 
 	initializeStores();
 	const modalStore = getModalStore();
-	let { data, children }: { data: LayoutData; children: Snippet } = $props();
-
-	let user: User | Record<string, never> = $state(data.user);
-	let userEmail: string = $derived(user.email);
-	let userId: string = $derived(user.id);
-	let username: string = $derived(user.username);
+	let { children }: { children: Snippet } = $props();
 
 	const popupHover: PopupSettings = {
 		event: 'hover',
@@ -40,7 +38,7 @@
 	///////////////////// GOOGLE AUTH //////////////////////////
 	onMount(() => {
 		// Check if user is already signed in
-		if (!userEmail) {
+		if (!cUser.email) {
 			getLoggedInUser();
 		}
 
@@ -58,9 +56,9 @@
 			}
 
 			// Get user data
-			user = data.user as unknown as User;
-			if (userEmail) {
-				user = await getOrCreateUser(supabase, userEmail);
+			let googleUser = data.user as unknown as User;
+			if (googleUser.email) {
+				cUser.set = await getOrCreateUser(supabase, googleUser.email) as User;
 			}
 		};
 
@@ -102,18 +100,18 @@
 
 	async function logout() {
 		await supabase.auth.signOut();
-		user = {};
 		displayGoogleButtons();
+		cUser.set = {} as User;
 	}
 
 	async function registerUsername(userId: any, r: Record<string, any>) {
-		user = await updateUser(supabase, userId, r);
+		cUser.set = await updateUser(supabase, userId, r);
 	}
 
 	async function getLoggedInUser(): Promise<User | Record<string, never>> {
 		let session = await getSession();
 		if (session) {
-			user = await getOrCreateUser(supabase, session.user.email);
+			cUser.set = await getOrCreateUser(supabase, session.user.email) as User;
 		}
 		return {};
 	}
@@ -131,10 +129,12 @@
 		};
 		modalStore.trigger(modal);
 	}
+
+	console.log("bottom of layout", cUser.get);
 </script>
 
 <Modal />
-{#key user}
+{#key cUser.get}
 	<main class="space-y-4 p-4">
 		<header class="p4">
 			<AppBar>
@@ -143,8 +143,8 @@
 				</svelte:fragment>
 				<h2 class="h2 font-bold">Pomo Farm</h2>
 				<svelte:fragment slot="trail">
-					{#if username}
-						<span class="text-xl">{username}</span>
+					{#if cUser.email}
+						<span class="text-xl">{cUser.username}</span>
 						<button
 							aria-label="Logout"
 							class="variant-filled btn [&>*]:pointer-events-none"
@@ -161,7 +161,7 @@
 		</header>
 
 		<!-- No user -->
-		{#if !userEmail && !username}
+		{#if !cUser.email && !cUser.username}
 			<div class="card p-4">
 				<header class="card-header">
 					<h3 class="h3">Welcome to Pomo Farm! Sign in with Google continue.</h3>
@@ -170,18 +170,9 @@
 					<div id="g_id_onload"></div>
 					<div id="g_id_signin"></div>
 				</section>
-				<footer class="card-footer">
-					{#if userEmail && userEmail === username}
-						<h3 class="h3">Nice to meet you, Farmer!</h3>
-						<button class="variant-filled btn" onclick={() => usernameForm(userId)}>
-							<span><i class="fa-regular fa-clipboard"></i></span>
-							<span>Farmer Registration</span>
-						</button>
-					{/if}
-				</footer>
 			</div>
 			<!-- Unregistered user -->
-		{:else if userEmail && userEmail === username}
+		{:else if cUser.email && cUser.email === cUser.username}
 			<div class="card p-4">
 				<header class="card-header">
 					<h3 class="h3">Nice to meet you, Farmer!</h3>
@@ -190,14 +181,14 @@
 					<span>Complete your farmer registration form:</span>
 				</section>
 				<footer class="card-footer">
-					<button class="variant-filled btn" onclick={() => usernameForm(userId)}>
+					<button class="variant-filled btn" onclick={() => usernameForm(cUser.id)}>
 						<span><i class="fa-regular fa-clipboard"></i></span>
 						<span>Farmer Registration</span>
 					</button>
 				</footer>
 			</div>
 			<!-- Registered and signed in -->
-		{:else if username !== userEmail}
+		{:else if cUser.username !== cUser.email}
 			{@render children()}
 		{/if}
 

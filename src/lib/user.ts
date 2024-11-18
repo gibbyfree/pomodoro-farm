@@ -1,14 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { UUID } from "crypto";
-
-export type User = {
-    id: UUID;
-    username: string;
-    email: string;
-    profile: any;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import type { User } from "./types";
 
 export async function updateUser(supabase: SupabaseClient, id: UUID, payload: any): Promise<User> {
     console.log('Updating user', id, payload);
