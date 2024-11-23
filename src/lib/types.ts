@@ -7,4 +7,6 @@ export type User = {
     profile: any;
     createdAt: Date;
     updatedAt: Date;
+    doro: number;
+    xp: number;
 }

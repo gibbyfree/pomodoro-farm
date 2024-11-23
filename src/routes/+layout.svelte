@@ -18,6 +18,7 @@
 
 	// Functions
 	import { getOrCreateUser, updateUser } from '$lib/user';
+	import { getLevelFromXp } from '$lib/level';
 	import { onMount } from 'svelte';
 
 	// Objects
@@ -174,8 +175,8 @@
 				</svelte:fragment>
 				<svelte:fragment slot="trail">
 					{#if cUser.email}
-						<span class="text-xl">lv.61 {cUser.username}</span>
-						<span> 💰5432 </span>
+						<span class="text-xl">lv{getLevelFromXp(cUser.xp)} {cUser.username}</span>
+						<span> 💰{cUser.doro} </span>
 						<button
 							aria-label="Logout"
 							class="variant-filled btn [&>*]:pointer-events-none"

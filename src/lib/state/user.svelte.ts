@@ -10,6 +10,8 @@ const emptyUser = {
     profile: "",
     createdAt: new Date(),
     updatedAt: new Date(),
+    doro: 0,
+    xp: 0,
 };
 
 const loggedInUser = await getSession() ?? emptyUser;
@@ -36,5 +38,11 @@ function user(init: User) {
         get email() {
             return user.email;
         },
+        get doro() {
+            return user.doro;
+        },
+        get xp() {
+            return user.xp;
+        },
     };
-}   
+}
