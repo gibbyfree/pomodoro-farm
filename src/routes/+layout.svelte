@@ -7,9 +7,17 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
-	import { AppBar, getModalStore, popup, Modal } from '@skeletonlabs/skeleton';
-	import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
+	import {
+		AppBar,
+		AppRail,
+		AppRailTile,
+		AppRailAnchor,
+		getModalStore,
+		Modal,
+		popup
+	} from '@skeletonlabs/skeleton';
 	import FormModal from '$lib/components/FormModal.svelte';
+	import TimerCard from '$lib/components/TimerCard.svelte';
 
 	// Types
 	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton';
@@ -134,15 +142,13 @@
 		};
 		modalStore.trigger(modal);
 	}
-
-	console.log('bottom of layout', cUser.get);
 </script>
 
 <Modal />
 
 {#key cUser.get}
 	<main class="grid grid-cols-12 grid-rows-6 gap-4">
-		<AppRail class="row-span-6 col-span-1 row-start-1">
+		<AppRail class="col-span-1 row-span-6 row-start-1">
 			<svelte:fragment slot="lead">
 				<AppRailAnchor href="/">(icon)</AppRailAnchor>
 			</svelte:fragment>
@@ -165,17 +171,23 @@
 			</svelte:fragment>
 		</AppRail>
 
-		<header class="col-start-2 row-start-1 col-span-10">
-			<AppBar>
+		<header class="col-span-10 col-start-2 row-start-1">
+			<AppBar
+				gridColumns="grid-cols-5"
+				slotLead="col-span-1 place-content-start"
+				slotDefault="col-start-3 col-span-1 place-content-center"
+				slotTrail="col-span-2 place-content-end"
+			>
 				<svelte:fragment slot="lead">
-					<h2 class="h2 font-bold">
-						<i class="fa-solid fa-wheat-awn text-xl"></i>
-						Pomo Farm
-					</h2>
+					<h3 class="h3 font-bold">Pomo World</h3>
 				</svelte:fragment>
+				<TimerCard />
 				<svelte:fragment slot="trail">
 					{#if cUser.email}
-						<span class="text-xl">lv{getLevelFromXp(cUser.xp)} {cUser.username}</span>
+						<span class="text-xl">
+							lv{getLevelFromXp(cUser.xp)}
+							<a href={`/user/${cUser.username}`}>{cUser.username}</a>
+						</span>
 						<span> 💰{cUser.doro} </span>
 						<button
 							aria-label="Logout"
@@ -192,7 +204,7 @@
 			</AppBar>
 		</header>
 
-		<div class="row-start-2 col-start-2 col-span-10 row-span-5">
+		<div class="col-span-10 col-start-2 row-span-5 row-start-2">
 			{#if !cUser.email && !cUser.username}
 				<div class="card p-4">
 					<header class="card-header">

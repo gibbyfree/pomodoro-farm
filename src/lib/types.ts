@@ -10,3 +10,8 @@ export type User = {
     doro: number;
     xp: number;
 }
+
+export type Timer = {
+    end: Date,
+    done: boolean,
+}
