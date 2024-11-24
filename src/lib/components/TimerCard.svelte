@@ -1,8 +1,15 @@
 <script lang="ts">
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { getToastStore, ProgressRadial } from '@skeletonlabs/skeleton';
 	import { cTimer } from '$lib/state/timer.svelte';
+	import type { ToastSettings } from '@skeletonlabs/skeleton';
 
+	const toastStore = getToastStore();
 	let now = $state(new Date());
+
+	const t: ToastSettings = {
+		message: 'Time to work!',
+		timeout: 5000
+	};
 
 	$effect(() => {
 		const interval = setInterval(() => {
@@ -42,6 +49,7 @@
 		localStorage.setItem('end', newEnd.toISOString());
 		cTimer.end = newEnd;
 		cTimer.done = false;
+		toastStore.trigger(t);
 	}
 </script>
 

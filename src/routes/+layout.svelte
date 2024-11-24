@@ -14,7 +14,8 @@
 		AppRailAnchor,
 		getModalStore,
 		Modal,
-		popup
+		popup,
+		Toast
 	} from '@skeletonlabs/skeleton';
 	import FormModal from '$lib/components/FormModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
@@ -145,6 +146,7 @@
 </script>
 
 <Modal />
+<Toast />
 
 {#key cUser.get}
 	<main class="grid grid-cols-12 grid-rows-6 gap-4">
