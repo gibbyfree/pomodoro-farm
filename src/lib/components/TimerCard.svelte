@@ -28,11 +28,13 @@
 	});
 
 	let remainingMins = $derived.by(() => {
-		return Math.floor(remaining / 60000);
+		let mins = Math.floor(remaining / 60000);
+		return mins <= 0 ? 0 : mins;
 	});
 
 	let remainingSecs = $derived.by(() => {
-		return Math.floor((remaining % 60000) / 1000);
+		let secs = Math.floor((remaining % 60000) / 1000);
+		return secs <= 0 ? 0 : secs;
 	});
 
 	function setTimer() {
