@@ -186,11 +186,19 @@
 				<TimerCard />
 				<svelte:fragment slot="trail">
 					{#if cUser.email}
-						<span class="text-xl">
-							lv{getLevelFromXp(cUser.xp)}
-							<a href={`/user/${cUser.username}`}>{cUser.username}</a>
-						</span>
-						<span> 💰{cUser.doro} </span>
+						<ul class="list">
+							<li>
+								<span>lv{getLevelFromXp(cUser.xp)}</span>
+								<span class="flex-auto">
+									<a href={`/user/${cUser.username}`}> {cUser.username}</a>
+								</span>
+							</li>
+							<li>
+								<span>💰</span>
+								<span class="flex-auto">{cUser.doro}</span>
+							</li>
+							<!-- ... -->
+						</ul>
 						<button
 							aria-label="Logout"
 							class="variant-filled btn [&>*]:pointer-events-none"

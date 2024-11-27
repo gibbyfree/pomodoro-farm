@@ -73,7 +73,7 @@
 	function getSetting() {}
 </script>
 
-<div class="card grid grid-cols-2 grid-rows-2 p-4">
+<div class="card grid grid-cols-2 p-4">
 	<ProgressRadial
 		width={'w-12'}
 		value={completedPct}
