@@ -12,6 +12,12 @@ export type User = {
 }
 
 export type Timer = {
-    end: Date,
+    end?: Date,
+    setting: TimerType,
     done: boolean,
+}
+
+export enum TimerType {
+    DORO,
+    COOLDOWN,
 }

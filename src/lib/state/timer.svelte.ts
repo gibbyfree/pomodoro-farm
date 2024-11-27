@@ -1,42 +1,50 @@
 import type { Timer } from "../types";
-
-const timerMins = 25;
-const maxRemaining = timerMins * 60 * 1000;
+import { TimerType } from "../types";
 
 const emptyTimer: Timer = {
-    end: new Date(),
-    done: false,
+    end: undefined,
+    setting: TimerType.COOLDOWN,
+    done: false
 }
 
 export const cTimer: Timer = getOngoingTimer() ?? timer(emptyTimer);
 
 function timer(init: Timer) {
-    let timer = $state(init);
+    let timer: Timer = $state(init);
 
     return {
         get get() {
             return { ...timer };
         },
-        set done(done: boolean) {
-            timer.done = done;
-        },
         set end(end: Date) {
             timer.end = end;
         },
-        get end() {
+        get end(): Date | undefined {
             return timer.end;
         },
-        get done() {
-            return timer.done;
+        get done(): boolean {
+            return timer.end ? timer.end.getTime() < Date.now() : true;
         },
+        set setting(setting: TimerType) {
+            timer.setting = setting;
+        },
+        get setting(): TimerType {
+            return timer.setting;
+        }
     };
 }
 
 function getOngoingTimer(): Timer | undefined {
-    const storedEnd = typeof window !== 'undefined' ? localStorage.getItem('end') : undefined;
-    if (storedEnd) {
-        let end = new Date(storedEnd);
-        let done = end.getTime() < Date.now();
-        return { end, done };
-    }
+    if (typeof window === 'undefined') return undefined;
+
+    const storedEnd = localStorage.getItem('end');
+    const end = storedEnd ? new Date(storedEnd) : undefined;
+    if (!end) return undefined;
+
+    const storedSetting = localStorage.getItem('setting');
+    const setting = storedSetting ? parseInt(storedSetting) : TimerType.COOLDOWN;
+
+    console.log('Found ongoing timer', { end, setting });
+
+    return { end, setting, done: false };
 }
