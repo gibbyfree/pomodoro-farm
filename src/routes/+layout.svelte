@@ -216,7 +216,7 @@
 			</AppBar>
 		</header>
 
-		<div class="col-span-10 col-start-2 row-span-5 row-start-2">
+		<div class="col-span-10 col-start-2 row-span-5 row-start-2 gap-4">
 			{#if !cUser.email && !cUser.username}
 				<div class="card p-4">
 					<header class="card-header">
