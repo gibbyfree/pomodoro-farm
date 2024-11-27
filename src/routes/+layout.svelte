@@ -181,7 +181,9 @@
 				slotTrail="col-span-2 place-content-end"
 			>
 				<svelte:fragment slot="lead">
-					<h3 class="h3 font-bold">Pomo World</h3>
+					<h3 class="h3 font-bold">
+						<a href="/">Pomo World</a>
+					</h3>
 				</svelte:fragment>
 				<TimerCard />
 				<svelte:fragment slot="trail">
