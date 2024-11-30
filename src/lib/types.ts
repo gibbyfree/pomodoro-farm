@@ -11,6 +11,10 @@ export type User = {
     xp: number;
 }
 
+export type Profile = {
+    bio: string;
+}
+
 export type Timer = {
     end?: Date,
     setting: TimerType,

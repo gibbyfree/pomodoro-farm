@@ -18,7 +18,6 @@
 		Toast
 	} from '@skeletonlabs/skeleton';
 	import RegisterModal from '$lib/components/RegisterModal.svelte';
-	import ProfileModal from '$lib/components/ProfileModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
 
 	// Types

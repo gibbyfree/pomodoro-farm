@@ -1,5 +1,5 @@
 import { getSession } from "$lib/supabase";
-import type { User } from "../types";
+import type { Profile, User } from "../types";
 
 const emptyUUID = '00000000-0000-0000-0000-000000000000';
 
@@ -7,7 +7,7 @@ const emptyUser = {
     id: emptyUUID,
     username: "",
     email: "",
-    profile: "",
+    profile: {},
     createdAt: new Date(),
     updatedAt: new Date(),
     doro: 0,
@@ -29,6 +29,9 @@ function user(init: User) {
         set set(newUser: User) {
             user = newUser;
         },
+        set profile(profile: Profile) {
+            user.profile = profile;
+        },
         get id() {
             return user.id;
         },
@@ -44,5 +47,8 @@ function user(init: User) {
         get xp() {
             return user.xp;
         },
+        get profile() {
+            return user.profile;
+        }
     };
 }
