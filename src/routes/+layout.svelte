@@ -17,7 +17,8 @@
 		popup,
 		Toast
 	} from '@skeletonlabs/skeleton';
-	import FormModal from '$lib/components/FormModal.svelte';
+	import RegisterModal from '$lib/components/RegisterModal.svelte';
+	import ProfileModal from '$lib/components/ProfileModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
 
 	// Types
@@ -42,6 +43,10 @@
 
 	let { children }: { children: Snippet } = $props();
 	let currentTile: number = 0;
+
+	const modalRegistry: Record<string, ModalComponent> = {
+		registerModal: { ref: RegisterModal }
+	};
 
 	const popupHover: PopupSettings = {
 		event: 'hover',
@@ -131,10 +136,9 @@
 	}
 
 	function usernameForm(userId: any): void {
-		const c: ModalComponent = { ref: FormModal };
 		const modal: ModalSettings = {
 			type: 'component',
-			component: c,
+			component: 'registerModal',
 			title: 'Howdy, stranger! What should we call you?',
 			body: '',
 			response: (r) => {
@@ -145,7 +149,7 @@
 	}
 </script>
 
-<Modal />
+<Modal components={modalRegistry} />
 <Toast />
 
 {#key cUser.get}
