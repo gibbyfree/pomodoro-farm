@@ -1,8 +1,8 @@
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { UUID } from "crypto";
 import type { User } from "./types";
+import { supabase } from "./supabase";
 
-export async function findUser(supabase: SupabaseClient, username: string): Promise<User | undefined> {
+export async function findUser(username: string): Promise<User | undefined> {
     const { data, error } = await supabase
         .from('Users')
         .select('*')
@@ -16,13 +16,11 @@ export async function findUser(supabase: SupabaseClient, username: string): Prom
     if (data.length === 0) {
         return undefined;
     } else {
-        console.log(data[0]);
         return data[0];
     }
 }
 
-export async function updateUser(supabase: SupabaseClient, id: UUID, payload: any): Promise<User> {
-    console.log('Updating user', id, payload);
+export async function updateUser(id: UUID, payload: any): Promise<User> {
     const { data, error } = await supabase
         .from('Users')
         .update(payload)
@@ -34,11 +32,10 @@ export async function updateUser(supabase: SupabaseClient, id: UUID, payload: an
         throw error;
     }
 
-    console.log(data[0]);
     return data[0];
 }
 
-export async function getOrCreateUser(supabase: SupabaseClient, email: string): Promise<User | Record<string, never>> {
+export async function getOrCreateUser(email: string): Promise<User | Record<string, never>> {
     const { data, error } = await supabase
         .from('Users')
         .select('*')
@@ -50,14 +47,13 @@ export async function getOrCreateUser(supabase: SupabaseClient, email: string): 
     }
 
     if (data.length === 0) {
-        return createUser(supabase, email);
+        return createUser(email);
     } else {
-        console.log(data[0]);
         return data[0];
     }
 }
 
-async function createUser(supabase: SupabaseClient, email: string): Promise<User | Record<string, never>> {
+async function createUser(email: string): Promise<User | Record<string, never>> {
     let { data, error } = await supabase
         .from('Users')
         .insert({
@@ -72,5 +68,5 @@ async function createUser(supabase: SupabaseClient, email: string): Promise<User
         return {};
     }
 
-    return getOrCreateUser(supabase, email);
+    return getOrCreateUser(email);
 }

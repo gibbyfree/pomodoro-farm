@@ -1,18 +1,17 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import type { PopupSettings } from '@skeletonlabs/skeleton';
-	import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 	import { Avatar, FileDropzone, popup } from '@skeletonlabs/skeleton';
 	import { cUser } from '$lib/state/user.svelte';
 	import type { Profile } from '$lib/types';
 	import { updateUser } from '$lib/user';
-	import { supabase } from '$lib/supabase';
 
 	let { data }: { data: PageData } = $props();
 	let user = data.user ?? { id: 'loading', username: 'loading', profile: null };
 
 	let isEditing = $state(false);
 
+	// svelte-ignore non_reactive_update
 	let files: FileList;
 	let formData: {
 		bio: string | null;
@@ -48,7 +47,7 @@
 					...formData
 				};
 				user.profile = newProfile;
-				await updateUser(supabase, cUser.id, { profile: newProfile });
+				await updateUser(cUser.id, { profile: newProfile });
 			}
 		}
 		// Toggle edit mode

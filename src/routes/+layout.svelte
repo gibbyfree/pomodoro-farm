@@ -76,7 +76,7 @@
 			// Get user data
 			let googleUser = data.user as unknown as User;
 			if (googleUser.email) {
-				cUser.set = (await getOrCreateUser(supabase, googleUser.email)) as User;
+				cUser.set = (await getOrCreateUser(googleUser.email)) as User;
 			}
 		};
 
@@ -123,13 +123,13 @@
 	}
 
 	async function registerUsername(userId: any, r: Record<string, any>) {
-		cUser.set = await updateUser(supabase, userId, r);
+		cUser.set = await updateUser(userId, r);
 	}
 
 	async function getLoggedInUser(): Promise<User | Record<string, never>> {
 		let session = await getSession();
 		if (session) {
-			cUser.set = (await getOrCreateUser(supabase, session.user.email)) as User;
+			cUser.set = (await getOrCreateUser(session.user.email)) as User;
 		}
 		return {};
 	}
