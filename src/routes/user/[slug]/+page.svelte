@@ -20,7 +20,7 @@
 		bio: null
 	};
 
-	const avatarUrl = `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/images/bluebear2.jpg`;
+	const avatarUrl = `https://pomofarms.s3.us-east-2.amazonaws.com/bluebear.png`;
 
 	const popupHover: PopupSettings = {
 		event: 'hover',
@@ -31,8 +31,15 @@
 	async function handleProfileEdit() {
 		if (isEditing) {
 			if (files) {
-				//const iconBuffer = await files[0].arrayBuffer();
-				//formData.iconBuffer = iconBuffer;
+				const icon = files[0];
+				const formData = new FormData();
+				formData.append('file', icon);
+				formData.append('key', cUser.username);
+
+				await fetch('/api/s3', {
+					method: 'POST',
+					body: formData
+				});
 			}
 			if (Object.values(formData).some((value) => value !== null)) {
 				let currProfile = user.profile ?? {};
