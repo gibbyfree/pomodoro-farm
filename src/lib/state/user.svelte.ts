@@ -14,9 +14,7 @@ const emptyUser = {
     xp: 0,
 };
 
-const loggedInUser = await getSession() ?? emptyUser;
-
-export const cUser = user(loggedInUser);
+export const cUser = user(emptyUser);
 
 function user(init: User) {
     // fns modifying User

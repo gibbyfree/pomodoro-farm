@@ -41,7 +41,7 @@
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	let { children }: { children: Snippet } = $props();
-	let currentTile: number = 0;
+	let currentTile: number = $state(0);
 
 	const modalRegistry: Record<string, ModalComponent> = {
 		registerModal: { ref: RegisterModal }
@@ -59,8 +59,7 @@
 		if (!cUser.email) {
 			getLoggedInUser();
 		}
-
-		// Define the handleSignInWithGoogle function
+		// Define the handleSignInWithGoogle function BEFORE loading the script
 		// @ts-ignore
 		window.handleSignInWithGoogle = async function (response) {
 			const { data, error } = await supabase.auth.signInWithIdToken({
@@ -68,28 +67,27 @@
 				token: response.credential
 			});
 
-			if (error) {
-				console.error('Error logging in with Google:', error.message);
-				return;
-			}
-
 			// Get user data
 			let googleUser = data.user as unknown as User;
+
 			if (googleUser.email) {
-				cUser.set = (await getOrCreateUser(googleUser.email)) as User;
+				const user = (await getOrCreateUser(googleUser.email)) as User;
+				cUser.set = user;
+			} else {
 			}
 		};
 
-		displayGoogleButtons();
+		// Only load Google script once
+		if (!document.querySelector('script[src="https://accounts.google.com/gsi/client"]')) {
+			displayGoogleButtons();
+		} else {
+			initializeGoogleSignIn();
+		}
 	});
 
-	function displayGoogleButtons() {
-		// Load the Google Sign-In library
-		const script = document.createElement('script');
-		script.src = 'https://accounts.google.com/gsi/client';
-		script.async = true;
-		script.onload = function () {
-			// Initialize the Google Sign-In library
+	function initializeGoogleSignIn() {
+		// @ts-ignore
+		if (window.google && window.google.accounts) {
 			// @ts-ignore
 			window.google.accounts.id.initialize({
 				client_id: '853122399782-rq5ked5t72qg31umbf6618iquiuuoqlb.apps.googleusercontent.com',
@@ -101,17 +99,28 @@
 				auto_select: true,
 				itp_support: true
 			});
-			// @ts-ignore
-			window.google.accounts.id.renderButton(document.getElementById('g_id_onload'), {
-				type: 'standard',
-				shape: 'pill',
-				theme: 'outline',
-				text: 'signin_with',
-				size: 'large',
-				logo_alignment: 'left',
-				width: 350
-			});
-		};
+
+			const buttonElement = document.getElementById('g_id_onload');
+			if (buttonElement) {
+				// @ts-ignore
+				window.google.accounts.id.renderButton(buttonElement, {
+					type: 'standard',
+					shape: 'pill',
+					theme: 'outline',
+					text: 'signin_with',
+					size: 'large',
+					logo_alignment: 'left',
+					width: 350
+				});
+			}
+		}
+	}
+
+	function displayGoogleButtons() {
+		// Load the Google Sign-In library
+		const script = document.createElement('script');
+		script.src = 'https://accounts.google.com/gsi/client';
+		script.async = true;
 		document.body.appendChild(script);
 	}
 	///////////////////// GOOGLE AUTH //////////////////////////
@@ -185,7 +194,7 @@
 			>
 				<svelte:fragment slot="lead">
 					<h3 class="h3 font-bold">
-						<a href="/">Pomo World</a>
+						<img src="/logo4.png" alt="Pomo Farm" />
 					</h3>
 				</svelte:fragment>
 				<TimerCard />
