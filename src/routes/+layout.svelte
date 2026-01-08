@@ -7,6 +7,7 @@
 
 	// Components
 	//import {AppBar, Navigation, ToastProvider } from '@skeletonlabs/skeleton-svelte';
+	import { AppBar } from '@skeletonlabs/skeleton-svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import RegisterModal from '$lib/components/RegisterModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
@@ -159,46 +160,42 @@
 		<!-- Main content area -->
 		<div class="flex flex-col">
 			<header class="border-surface-200-800 border-b p-4">
-				<!-- <AppBar
-					gridColumns="grid-cols-5"
-					slotLead="col-span-1 place-content-start"
-					slotDefault="col-start-3 col-span-1 place-content-center"
-					slotTrail="col-span-2 place-content-end"
-				>
-					<svelte:fragment slot="lead">
-						<h3 class="h3 font-bold">
-							<img src="/logo4.png" alt="Pomo Farm" />
-						</h3>
-					</svelte:fragment>
-					<TimerCard />
-					<svelte:fragment slot="trail">
-						{#if cUser.email}
-							<ul class="list">
-								<li>
-									<span>lv{getLevelFromXp(cUser.xp)}</span>
-									<span class="flex-auto">
-										<a href={`/user/${cUser.username}`}> {cUser.username}</a>
+				<AppBar>
+					<AppBar.Toolbar class="flex w-full items-center justify-between">
+						<AppBar.Lead>
+							<img src="/logo4.png" alt="Pomo Farm" class="h-8" />
+						</AppBar.Lead>
+						<AppBar.Trail class="flex items-center gap-4">
+							{#if cUser.email}
+								<ul class="list">
+									<li>
+										<span>lv{getLevelFromXp(cUser.xp)}</span>
+										<span class="flex-auto">
+											<a href={`/user/${cUser.username}`}> {cUser.username}</a>
+										</span>
+									</li>
+									<li>
+										<span>💰</span>
+										<span class="flex-auto">{cUser.doro}</span>
+									</li>
+								</ul>
+								<button
+									aria-label="Logout"
+									class="preset-filled btn *:pointer-events-none"
+									onclick={() => logout()}
+								>
+									<span>
+										<i class="fa-solid fa-right-from-bracket"></i>
 									</span>
-								</li>
-								<li>
-									<span>💰</span>
-									<span class="flex-auto">{cUser.doro}</span>
-								</li>
-							</ul>
-							<button
-								aria-label="Logout"
-								class="preset-filled btn *:pointer-events-none"
-								use:popup={popupHover}
-								onclick={() => logout()}
-							>
-								<span>
-									<i class="fa-solid fa-right-from-bracket"></i>
-								</span>
-							</button>
-						{/if}
-					</svelte:fragment>
-				</AppBar> -->
-				<p>appbar</p>
+								</button>
+							{/if}
+						</AppBar.Trail>
+					</AppBar.Toolbar>
+					<AppBar.Headline>
+						<!-- 					<TimerCard /> -->
+						<p>timercard</p>
+					</AppBar.Headline>
+				</AppBar>
 			</header>
 
 			<div class="flex-1 p-6">
