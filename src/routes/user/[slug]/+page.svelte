@@ -77,7 +77,7 @@
 				<button
 					type="button"
 					aria-label="Edit"
-					class="variant-filled-secondary btn [&>*]:pointer-events-none"
+					class="variant-filled-secondary btn *:pointer-events-none"
 					use:popup={popupHover}
 					onclick={() => handleProfileEdit()}
 				>

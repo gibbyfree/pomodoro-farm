@@ -106,7 +106,7 @@
 				window.google.accounts.id.renderButton(buttonElement, {
 					type: 'standard',
 					shape: 'pill',
-					theme: 'outline',
+					theme: 'outline-solid',
 					text: 'signin_with',
 					size: 'large',
 					logo_alignment: 'left',
@@ -215,7 +215,7 @@
 						</ul>
 						<button
 							aria-label="Logout"
-							class="variant-filled btn [&>*]:pointer-events-none"
+							class="variant-filled btn *:pointer-events-none"
 							use:popup={popupHover}
 							onclick={() => logout()}
 						>
