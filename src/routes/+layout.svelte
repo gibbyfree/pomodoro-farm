@@ -7,6 +7,7 @@
 
 	// Components
 	//import {AppBar, Navigation, ToastProvider } from '@skeletonlabs/skeleton-svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 	import RegisterModal from '$lib/components/RegisterModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
 
@@ -151,106 +152,88 @@
 <ToastProvider /> -->
 
 {#key cUser.get}
-	<main class="grid grid-cols-12 grid-rows-6 gap-4">
-		<!-- 		<Navigation class="col-span-1 row-span-6 row-start-1">
-			<svelte:fragment slot="lead">
-				<AppRailAnchor href="/">(icon)</AppRailAnchor>
-			</svelte:fragment>
-			<Navigation.Tile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
-				<svelte:fragment slot="lead">(icon)</svelte:fragment>
-				<span>Tile 1</span>
-			</Navigation.Tile>
-			<Navigation.Tile bind:group={currentTile} name="tile-2" value={1} title="tile-2">
-				<svelte:fragment slot="lead">(icon)</svelte:fragment>
-				<span>Tile 2</span>
-			</Navigation.Tile>
-			<Navigation.Tile bind:group={currentTile} name="tile-3" value={2} title="tile-3">
-				<svelte:fragment slot="lead">(icon)</svelte:fragment>
-				<span>Tile 3</span>
-			</Navigation.Tile>
-			<svelte:fragment slot="trail">
-				<AppRailAnchor href="/" target="_blank" title="Account">(icon)</AppRailAnchor>
-			</svelte:fragment>
-			
-		</Navigation> -->
-		<p>navigation</p>
+	<main class="grid min-h-screen grid-cols-[auto_1fr]">
+		<!-- Sidebar -->
+		<Sidebar />
 
-		<header class="col-span-10 col-start-2 row-start-1">
-			<!-- <AppBar
-				gridColumns="grid-cols-5"
-				slotLead="col-span-1 place-content-start"
-				slotDefault="col-start-3 col-span-1 place-content-center"
-				slotTrail="col-span-2 place-content-end"
-			>
-				<svelte:fragment slot="lead">
-					<h3 class="h3 font-bold">
-						<img src="/logo4.png" alt="Pomo Farm" />
-					</h3>
-				</svelte:fragment>
-				<TimerCard />
-				<svelte:fragment slot="trail">
-					{#if cUser.email}
-						<ul class="list">
-							<li>
-								<span>lv{getLevelFromXp(cUser.xp)}</span>
-								<span class="flex-auto">
-									<a href={`/user/${cUser.username}`}> {cUser.username}</a>
+		<!-- Main content area -->
+		<div class="flex flex-col">
+			<header class="border-surface-200-800 border-b p-4">
+				<!-- <AppBar
+					gridColumns="grid-cols-5"
+					slotLead="col-span-1 place-content-start"
+					slotDefault="col-start-3 col-span-1 place-content-center"
+					slotTrail="col-span-2 place-content-end"
+				>
+					<svelte:fragment slot="lead">
+						<h3 class="h3 font-bold">
+							<img src="/logo4.png" alt="Pomo Farm" />
+						</h3>
+					</svelte:fragment>
+					<TimerCard />
+					<svelte:fragment slot="trail">
+						{#if cUser.email}
+							<ul class="list">
+								<li>
+									<span>lv{getLevelFromXp(cUser.xp)}</span>
+									<span class="flex-auto">
+										<a href={`/user/${cUser.username}`}> {cUser.username}</a>
+									</span>
+								</li>
+								<li>
+									<span>💰</span>
+									<span class="flex-auto">{cUser.doro}</span>
+								</li>
+							</ul>
+							<button
+								aria-label="Logout"
+								class="preset-filled btn *:pointer-events-none"
+								use:popup={popupHover}
+								onclick={() => logout()}
+							>
+								<span>
+									<i class="fa-solid fa-right-from-bracket"></i>
 								</span>
-							</li>
-							<li>
-								<span>💰</span>
-								<span class="flex-auto">{cUser.doro}</span>
-							</li>
-						</ul>
-						<button
-							aria-label="Logout"
-							class="preset-filled btn *:pointer-events-none"
-							use:popup={popupHover}
-							onclick={() => logout()}
-						>
-							<span>
-								<i class="fa-solid fa-right-from-bracket"></i>
-							</span>
-						</button>
-					{/if}
-				</svelte:fragment>
-			</AppBar> -->
-			<p>appbar</p>
-		</header>
+							</button>
+						{/if}
+					</svelte:fragment>
+				</AppBar> -->
+				<p>appbar</p>
+			</header>
 
-		<div class="col-span-10 col-start-2 row-span-5 row-start-2 gap-4">
-			{#if !cUser.email && !cUser.username}
-				<div class="card p-4">
-					<header class="card-header">
-						<h3 class="h3">Welcome to Pomo Farm! Sign in with Google continue.</h3>
-					</header>
-					<section class="p-4" id="google-btn-wrapper">
-						<div id="g_id_onload"></div>
-						<div id="g_id_signin"></div>
-					</section>
-				</div>
-				<!-- Unregistered user -->
-			{:else if cUser.email && cUser.email === cUser.username}
-				<div class="card p-4">
-					<header class="card-header">
-						<h3 class="h3">Nice to meet you, Farmer!</h3>
-					</header>
-					<section class="p-4">
-						<span>Complete your farmer registration form:</span>
-					</section>
-					<footer class="card-footer">
-						<button class="preset-filled btn" onclick={() => usernameForm(cUser.id)}>
-							<span><i class="fa-regular fa-clipboard"></i></span>
-							<span>Farmer Registration</span>
-						</button>
-					</footer>
-				</div>
-				<!-- Registered and signed in -->
-			{:else if cUser.username !== cUser.email}
-				{@render children()}
-			{/if}
+			<div class="flex-1 p-6">
+				{#if !cUser.email && !cUser.username}
+					<div class="card p-4">
+						<header class="card-header">
+							<h3 class="h3">Welcome to Pomo Farm! Sign in with Google continue.</h3>
+						</header>
+						<section class="p-4" id="google-btn-wrapper">
+							<div id="g_id_onload"></div>
+							<div id="g_id_signin"></div>
+						</section>
+					</div>
+					<!-- Unregistered user -->
+				{:else if cUser.email && cUser.email === cUser.username}
+					<div class="card p-4">
+						<header class="card-header">
+							<h3 class="h3">Nice to meet you, Farmer!</h3>
+						</header>
+						<section class="p-4">
+							<span>Complete your farmer registration form:</span>
+						</section>
+						<footer class="card-footer">
+							<button class="preset-filled btn" onclick={() => usernameForm(cUser.id)}>
+								<span><i class="fa-regular fa-clipboard"></i></span>
+								<span>Farmer Registration</span>
+							</button>
+						</footer>
+					</div>
+					<!-- Registered and signed in -->
+				{:else if cUser.username !== cUser.email}
+					{@render children()}
+				{/if}
+			</div>
 		</div>
-		<!-- No user -->
 
 		<div class="card preset-filled-secondary-500 p-4" data-popup="popupHover">
 			<p>Logout</p>
