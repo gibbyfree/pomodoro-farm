@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { Progress } from '@skeletonlabs/skeleton-svelte';
+	//import { Progress } from '@skeletonlabs/skeleton-svelte';
 	import { cTimer } from '$lib/state/timer.svelte';
-	import type { ToastSettings } from '@skeletonlabs/skeleton-svelte';
+	//import type { ToastSettings } from '@skeletonlabs/skeleton-svelte';
 	import { TimerType } from '$lib/types';
 
-	const toastStore = getToastStore();
+	//const toastStore = getToastStore();
 
-	const t: ToastSettings = {
+	/* 	const t: ToastSettings = {
 		message: 'Time to work!',
 		timeout: 5000
-	};
+	}; */
 
 	$effect(() => {
 		const interval = setInterval(() => {
@@ -67,14 +67,14 @@
 
 		cTimer.end = newEnd;
 		cTimer.setting = TimerType.DORO;
-		toastStore.trigger(t);
+		//toastStore.trigger(t);
 	}
 
 	function getSetting() {}
 </script>
 
 <div class="card grid grid-cols-2 p-4">
-	<Progress
+	<!-- 	<Progress
 		width={'w-12'}
 		value={completedPct}
 		min={0}
@@ -83,7 +83,8 @@
 		meter={cTimer.setting == TimerType.DORO ? 'stroke-primary-500' : 'stroke-success-500'}
 		track="stroke-primary-500/30"
 		strokeLinecap="round"
-	/>
+	/> -->
+	<p>timer</p>
 	{#if cTimer.done}
 		<!-- New timer can be set -->
 		<button class="preset-filled chip hover:preset-filled-primary-500" onclick={() => setTimer()}>

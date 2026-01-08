@@ -6,13 +6,12 @@
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
-	import {
-		AppBar, Navigation, ToastProvider } from '@skeletonlabs/skeleton-svelte';
+	//import {AppBar, Navigation, ToastProvider } from '@skeletonlabs/skeleton-svelte';
 	import RegisterModal from '$lib/components/RegisterModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
 
 	// Types
-	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton-svelte';
+	//import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton-svelte';
 	import type { Snippet } from 'svelte';
 	import type { User } from '$lib/types';
 
@@ -27,14 +26,14 @@
 
 	///////////////////// END IMPORTS /////////////////////
 
-	initializeStores();
-	const modalStore = getModalStore();
-	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+	//initializeStores();
+	//const modalStore = getModalStore();
+	//storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	let { children }: { children: Snippet } = $props();
 	let currentTile: number = $state(0);
 
-	const modalRegistry: Record<string, ModalComponent> = {
+	/* 	const modalRegistry: Record<string, ModalComponent> = {
 		registerModal: { ref: RegisterModal }
 	};
 
@@ -43,7 +42,7 @@
 		target: 'popupHover',
 		placement: 'top'
 	};
-
+ */
 	///////////////////// GOOGLE AUTH //////////////////////////
 	onMount(() => {
 		// Check if user is already signed in
@@ -135,7 +134,7 @@
 	}
 
 	function usernameForm(userId: any): void {
-		const modal: ModalSettings = {
+		/* 		const modal: ModalSettings = {
 			type: 'component',
 			component: 'registerModal',
 			title: 'Howdy, stranger! What should we call you?',
@@ -144,20 +143,19 @@
 				registerUsername(userId, r);
 			}
 		};
-		modalStore.trigger(modal);
+		modalStore.trigger(modal); */
 	}
 </script>
 
-<Modal components={modalRegistry} />
-<ToastProvider />
+<!-- <Modal components={modalRegistry} />
+<ToastProvider /> -->
 
 {#key cUser.get}
 	<main class="grid grid-cols-12 grid-rows-6 gap-4">
-		<Navigation class="col-span-1 row-span-6 row-start-1">
+		<!-- 		<Navigation class="col-span-1 row-span-6 row-start-1">
 			<svelte:fragment slot="lead">
 				<AppRailAnchor href="/">(icon)</AppRailAnchor>
 			</svelte:fragment>
-			<!-- --- -->
 			<Navigation.Tile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
 				<span>Tile 1</span>
@@ -170,14 +168,15 @@
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
 				<span>Tile 3</span>
 			</Navigation.Tile>
-			<!-- --- -->
 			<svelte:fragment slot="trail">
 				<AppRailAnchor href="/" target="_blank" title="Account">(icon)</AppRailAnchor>
 			</svelte:fragment>
-		</Navigation>
+			
+		</Navigation> -->
+		<p>navigation</p>
 
 		<header class="col-span-10 col-start-2 row-start-1">
-			<AppBar
+			<!-- <AppBar
 				gridColumns="grid-cols-5"
 				slotLead="col-span-1 place-content-start"
 				slotDefault="col-start-3 col-span-1 place-content-center"
@@ -202,7 +201,6 @@
 								<span>💰</span>
 								<span class="flex-auto">{cUser.doro}</span>
 							</li>
-							<!-- ... -->
 						</ul>
 						<button
 							aria-label="Logout"
@@ -216,7 +214,8 @@
 						</button>
 					{/if}
 				</svelte:fragment>
-			</AppBar>
+			</AppBar> -->
+			<p>appbar</p>
 		</header>
 
 		<div class="col-span-10 col-start-2 row-span-5 row-start-2 gap-4">

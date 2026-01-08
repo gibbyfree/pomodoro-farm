@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { PopupSettings, FileUpload } from '@skeletonlabs/skeleton-svelte';
-	import { Avatar } from '@skeletonlabs/skeleton-svelte';
+	//import type { PopupSettings, FileUpload } from '@skeletonlabs/skeleton-svelte';
+	//import { Avatar } from '@skeletonlabs/skeleton-svelte';
 	import { cUser } from '$lib/state/user.svelte';
 	import type { Profile } from '$lib/types';
 	import { updateUser } from '$lib/user';
@@ -21,11 +21,11 @@
 
 	const avatarUrl = `https://pomofarms.s3.us-east-2.amazonaws.com/bluebear.png`;
 
-	const popupHover: PopupSettings = {
+	/* 	const popupHover: PopupSettings = {
 		event: 'hover',
 		target: 'popupHover',
 		placement: 'bottom'
-	};
+	}; */
 
 	async function handleProfileEdit() {
 		if (isEditing) {
@@ -58,16 +58,17 @@
 <div class="grid h-full w-full grid-cols-10 grid-rows-5 gap-4">
 	<div class="col-span-3 row-span-3 rounded-xl p-4">
 		{#if isEditing}
-			<FileUpload name="files" bind:files>
+			<!-- 			<FileUpload name="files" bind:files>
 				<svelte:fragment slot="lead"><i class="fa-solid fa-file-arrow-up"></i></svelte:fragment>
 				<svelte:fragment slot="message">Upload a profile picture</svelte:fragment>
 				<svelte:fragment slot="meta">PNG, JPG allowed</svelte:fragment>
-			</FileUpload>
+			</FileUpload> -->
 		{:else}
-			<Avatar src={avatarUrl} alt="avatar" width="w-full" rounded="rounded-md" />
+			<!-- 			<Avatar src={avatarUrl} alt="avatar" width="w-full" rounded="rounded-md" />
+ -->
 		{/if}
 		{#if user.id !== cUser.id}
-			<div class="preset-filled-secondary-500  my-4 w-full justify-center">
+			<div class="preset-filled-secondary-500 my-4 w-full justify-center">
 				<button>Add</button>
 				<button>Trade</button>
 				<button>DM</button>
@@ -78,7 +79,6 @@
 					type="button"
 					aria-label="Edit"
 					class="preset-filled-secondary-500 btn *:pointer-events-none"
-					use:popup={popupHover}
 					onclick={() => handleProfileEdit()}
 				>
 					{#if isEditing}
@@ -104,11 +104,11 @@
 					placeholder={user.profile.bio}
 				/>
 			{:else}
-				<section class="text-l font-medium leading-relaxed">{user.profile.bio}</section>
+				<section class="text-l leading-relaxed font-medium">{user.profile.bio}</section>
 			{/if}
 		</div>
 		<div class="card h-1/4 p-4">
-			<section class="text-l font-medium leading-relaxed">milestones</section>
+			<section class="text-l leading-relaxed font-medium">milestones</section>
 		</div>
 	</div>
 </div>
