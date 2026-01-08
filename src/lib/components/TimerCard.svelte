@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ProgressRing } from '@skeletonlabs/skeleton-svelte';
+	import { Progress } from '@skeletonlabs/skeleton-svelte';
 	import { cTimer } from '$lib/state/timer.svelte';
 	import type { ToastSettings } from '@skeletonlabs/skeleton-svelte';
 	import { TimerType } from '$lib/types';
@@ -74,7 +74,7 @@
 </script>
 
 <div class="card grid grid-cols-2 p-4">
-	<ProgressRing
+	<Progress
 		width={'w-12'}
 		value={completedPct}
 		min={0}
