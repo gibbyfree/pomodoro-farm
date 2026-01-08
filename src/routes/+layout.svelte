@@ -1,27 +1,18 @@
 <script lang="ts">
 	///////////////////// IMPORTS /////////////////////
 	import '../app.css';
-	import { initializeStores, storePopup } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 
 	import '@fortawesome/fontawesome-free/css/all.min.css';
 
 	// Components
 	import {
-		AppBar,
-		AppRail,
-		AppRailTile,
-		AppRailAnchor,
-		getModalStore,
-		Modal,
-		popup,
-		Toast
-	} from '@skeletonlabs/skeleton';
+		AppBar, Navigation, ToastProvider } from '@skeletonlabs/skeleton-svelte';
 	import RegisterModal from '$lib/components/RegisterModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
 
 	// Types
-	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton';
+	import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton-svelte';
 	import type { Snippet } from 'svelte';
 	import type { User } from '$lib/types';
 
@@ -158,32 +149,32 @@
 </script>
 
 <Modal components={modalRegistry} />
-<Toast />
+<ToastProvider />
 
 {#key cUser.get}
 	<main class="grid grid-cols-12 grid-rows-6 gap-4">
-		<AppRail class="col-span-1 row-span-6 row-start-1">
+		<Navigation class="col-span-1 row-span-6 row-start-1">
 			<svelte:fragment slot="lead">
 				<AppRailAnchor href="/">(icon)</AppRailAnchor>
 			</svelte:fragment>
 			<!-- --- -->
-			<AppRailTile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
+			<Navigation.Tile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
 				<span>Tile 1</span>
-			</AppRailTile>
-			<AppRailTile bind:group={currentTile} name="tile-2" value={1} title="tile-2">
+			</Navigation.Tile>
+			<Navigation.Tile bind:group={currentTile} name="tile-2" value={1} title="tile-2">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
 				<span>Tile 2</span>
-			</AppRailTile>
-			<AppRailTile bind:group={currentTile} name="tile-3" value={2} title="tile-3">
+			</Navigation.Tile>
+			<Navigation.Tile bind:group={currentTile} name="tile-3" value={2} title="tile-3">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
 				<span>Tile 3</span>
-			</AppRailTile>
+			</Navigation.Tile>
 			<!-- --- -->
 			<svelte:fragment slot="trail">
 				<AppRailAnchor href="/" target="_blank" title="Account">(icon)</AppRailAnchor>
 			</svelte:fragment>
-		</AppRail>
+		</Navigation>
 
 		<header class="col-span-10 col-start-2 row-start-1">
 			<AppBar
@@ -215,7 +206,7 @@
 						</ul>
 						<button
 							aria-label="Logout"
-							class="variant-filled btn *:pointer-events-none"
+							class="preset-filled btn *:pointer-events-none"
 							use:popup={popupHover}
 							onclick={() => logout()}
 						>
@@ -249,7 +240,7 @@
 						<span>Complete your farmer registration form:</span>
 					</section>
 					<footer class="card-footer">
-						<button class="variant-filled btn" onclick={() => usernameForm(cUser.id)}>
+						<button class="preset-filled btn" onclick={() => usernameForm(cUser.id)}>
 							<span><i class="fa-regular fa-clipboard"></i></span>
 							<span>Farmer Registration</span>
 						</button>
@@ -262,9 +253,9 @@
 		</div>
 		<!-- No user -->
 
-		<div class="card variant-filled-secondary p-4" data-popup="popupHover">
+		<div class="card preset-filled-secondary-500 p-4" data-popup="popupHover">
 			<p>Logout</p>
-			<div class="variant-filled-secondary arrow"></div>
+			<div class="preset-filled-secondary-500 arrow"></div>
 		</div>
 	</main>
 {/key}

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { getToastStore, ProgressRadial } from '@skeletonlabs/skeleton';
+	import { ProgressRing } from '@skeletonlabs/skeleton-svelte';
 	import { cTimer } from '$lib/state/timer.svelte';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
+	import type { ToastSettings } from '@skeletonlabs/skeleton-svelte';
 	import { TimerType } from '$lib/types';
 
 	const toastStore = getToastStore();
@@ -74,7 +74,7 @@
 </script>
 
 <div class="card grid grid-cols-2 p-4">
-	<ProgressRadial
+	<ProgressRing
 		width={'w-12'}
 		value={completedPct}
 		min={0}
@@ -86,7 +86,7 @@
 	/>
 	{#if cTimer.done}
 		<!-- New timer can be set -->
-		<button class="variant-filled chip hover:variant-filled-primary" onclick={() => setTimer()}>
+		<button class="preset-filled chip hover:preset-filled-primary-500" onclick={() => setTimer()}>
 			<span> <i class="fa-solid fa-stopwatch"></i></span>
 			<span>Set</span>
 		</button>
@@ -94,11 +94,11 @@
 		<!-- Timer is running -->
 		{#if cTimer.setting == TimerType.DORO}
 			<!-- because player is working -->
-			<span class="variant-filled badge">Time to work!</span>
+			<span class="preset-filled badge">Time to work!</span>
 		{:else if cTimer.setting == TimerType.COOLDOWN}
 			<!-- because player is resting -->
-			<span class="variant-filled badge">Time to rest!</span>
+			<span class="preset-filled badge">Time to rest!</span>
 		{/if}
-		<span class="variant-filled badge">{remainingMins}m {remainingSecs}s</span>
+		<span class="preset-filled badge">{remainingMins}m {remainingSecs}s</span>
 	{/if}
 </div>

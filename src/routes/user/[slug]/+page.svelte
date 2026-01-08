@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import type { PopupSettings } from '@skeletonlabs/skeleton';
-	import { Avatar, FileDropzone, popup } from '@skeletonlabs/skeleton';
+	import type { PopupSettings, FileUpload } from '@skeletonlabs/skeleton-svelte';
+	import { Avatar } from '@skeletonlabs/skeleton-svelte';
 	import { cUser } from '$lib/state/user.svelte';
 	import type { Profile } from '$lib/types';
 	import { updateUser } from '$lib/user';
@@ -58,16 +58,16 @@
 <div class="grid h-full w-full grid-cols-10 grid-rows-5 gap-4">
 	<div class="col-span-3 row-span-3 rounded-xl p-4">
 		{#if isEditing}
-			<FileDropzone name="files" bind:files>
+			<FileUpload name="files" bind:files>
 				<svelte:fragment slot="lead"><i class="fa-solid fa-file-arrow-up"></i></svelte:fragment>
 				<svelte:fragment slot="message">Upload a profile picture</svelte:fragment>
 				<svelte:fragment slot="meta">PNG, JPG allowed</svelte:fragment>
-			</FileDropzone>
+			</FileUpload>
 		{:else}
 			<Avatar src={avatarUrl} alt="avatar" width="w-full" rounded="rounded-md" />
 		{/if}
 		{#if user.id !== cUser.id}
-			<div class="variant-filled-secondary btn-group my-4 w-full justify-center">
+			<div class="preset-filled-secondary-500  my-4 w-full justify-center">
 				<button>Add</button>
 				<button>Trade</button>
 				<button>DM</button>
@@ -77,7 +77,7 @@
 				<button
 					type="button"
 					aria-label="Edit"
-					class="variant-filled-secondary btn *:pointer-events-none"
+					class="preset-filled-secondary-500 btn *:pointer-events-none"
 					use:popup={popupHover}
 					onclick={() => handleProfileEdit()}
 				>
@@ -113,11 +113,11 @@
 	</div>
 </div>
 
-<div class="card variant-filled-secondary p-4" data-popup="popupHover">
+<div class="card preset-filled-secondary-500 p-4" data-popup="popupHover">
 	{#if isEditing}
 		<p>Save</p>
 	{:else}
 		<p>Edit Profile</p>
 	{/if}
-	<div class="variant-filled-secondary arrow"></div>
+	<div class="preset-filled-secondary-500 arrow"></div>
 </div>
