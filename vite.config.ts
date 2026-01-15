@@ -1,7 +1,8 @@
 // vite.config.js
 
-import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite'
 
 /** @type {import('vite').Plugin} */
 const viteServerConfig = () => ({
@@ -15,5 +16,5 @@ const viteServerConfig = () => ({
 });
 
 export default defineConfig({
-    plugins: [sveltekit(), viteServerConfig()]
+    plugins: [sveltekit(), viteServerConfig(), tailwindcss()]
 });
