@@ -7,10 +7,11 @@
 
 	// Components
 	//import {AppBar, Navigation, ToastProvider } from '@skeletonlabs/skeleton-svelte';
-	import { AppBar } from '@skeletonlabs/skeleton-svelte';
+	import { AppBar, Toast } from '@skeletonlabs/skeleton-svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import RegisterModal from '$lib/components/RegisterModal.svelte';
 	import TimerCard from '$lib/components/TimerCard.svelte';
+	import { toaster } from '$lib/toaster';
 
 	// Types
 	//import type { ModalSettings, ModalComponent, PopupSettings } from '@skeletonlabs/skeleton-svelte';
@@ -149,8 +150,21 @@
 	}
 </script>
 
-<!-- <Modal components={modalRegistry} />
-<ToastProvider /> -->
+<!-- <Modal components={modalRegistry} /> -->
+
+<Toast.Group {toaster}>
+	{#snippet children(toast)}
+		<Toast {toast} class="preset-filled-primary-500 card min-w-80 p-4 shadow-lg">
+			<Toast.Message class="flex flex-col gap-2">
+				<Toast.Title class="text-lg font-bold">{toast.title}</Toast.Title>
+				<Toast.Description class="text-base opacity-80">{toast.description}</Toast.Description>
+			</Toast.Message>
+			{#if toast.closable}
+				<Toast.CloseTrigger class="btn-icon preset-tonal-primary" />
+			{/if}
+		</Toast>
+	{/snippet}
+</Toast.Group>
 
 {#key cUser.get}
 	<main class="grid min-h-screen grid-cols-[auto_1fr]">

@@ -1,15 +1,8 @@
 <script lang="ts">
 	import { Progress } from '@skeletonlabs/skeleton-svelte';
 	import { cTimer } from '$lib/state/timer.svelte';
-	//import type { ToastSettings } from '@skeletonlabs/skeleton-svelte';
 	import { TimerType } from '$lib/types';
-
-	//const toastStore = getToastStore();
-
-	/* 	const t: ToastSettings = {
-		message: 'Time to work!',
-		timeout: 5000
-	}; */
+	import { toaster } from '$lib/toaster';
 
 	$effect(() => {
 		const interval = setInterval(() => {
@@ -67,7 +60,7 @@
 
 		cTimer.end = newEnd;
 		cTimer.setting = TimerType.DORO;
-		//toastStore.trigger(t);
+		toaster.info({ title: '', description: 'Time to work!', closable: false });
 	}
 
 	function getSetting() {}
