@@ -1,5 +1,5 @@
 <script lang="ts">
-	//import { Progress } from '@skeletonlabs/skeleton-svelte';
+	import { Progress } from '@skeletonlabs/skeleton-svelte';
 	import { cTimer } from '$lib/state/timer.svelte';
 	//import type { ToastSettings } from '@skeletonlabs/skeleton-svelte';
 	import { TimerType } from '$lib/types';
@@ -73,18 +73,26 @@
 	function getSetting() {}
 </script>
 
-<div class="card grid grid-cols-2 p-4">
-	<!-- 	<Progress
-		width={'w-12'}
-		value={completedPct}
-		min={0}
-		max={100}
-		stroke={120}
-		meter={cTimer.setting == TimerType.DORO ? 'stroke-primary-500' : 'stroke-success-500'}
-		track="stroke-primary-500/30"
-		strokeLinecap="round"
-	/> -->
-	<p>timer</p>
+<div class="flex flex-col items-center gap-2">
+	<Progress value={completedPct} max={100} class="relative w-fit">
+		<div class="absolute inset-0 flex items-center justify-center">
+			<Progress.ValueText>
+				{#if cTimer.done}
+					<span class="text-sm font-medium">Ready!</span>
+				{:else}
+					<span class="text-sm font-medium"
+						>{remainingMins}:{remainingSecs.toString().padStart(2, '0')}</span
+					>
+				{/if}
+			</Progress.ValueText>
+		</div>
+		<Progress.Circle class="[--size:4rem] [--thickness:calc(var(--size)/10)]">
+			<Progress.CircleTrack />
+			<Progress.CircleRange
+				class={cTimer.setting === TimerType.DORO ? 'stroke-primary-500' : 'stroke-success-500'}
+			/>
+		</Progress.Circle>
+	</Progress>
 	{#if cTimer.done}
 		<!-- New timer can be set -->
 		<button class="preset-filled chip hover:preset-filled-primary-500" onclick={() => setTimer()}>
@@ -100,6 +108,5 @@
 			<!-- because player is resting -->
 			<span class="preset-filled badge">Time to rest!</span>
 		{/if}
-		<span class="preset-filled badge">{remainingMins}m {remainingSecs}s</span>
 	{/if}
 </div>

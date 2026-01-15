@@ -163,9 +163,9 @@
 				<AppBar>
 					<AppBar.Toolbar class="flex w-full items-center justify-between">
 						<AppBar.Lead>
-							<img src="/logo4.png" alt="Pomo Farm" class="h-8" />
+							<img src="/logo4.png" alt="Pomo Farm" class="h-12" />
 						</AppBar.Lead>
-						<AppBar.Trail class="flex items-center gap-4">
+						<AppBar.Trail class="flex items-center gap-6 text-lg">
 							{#if cUser.email}
 								<ul class="list">
 									<li>
@@ -181,7 +181,7 @@
 								</ul>
 								<button
 									aria-label="Logout"
-									class="preset-filled btn *:pointer-events-none"
+									class="preset-filled btn btn-lg *:pointer-events-none"
 									onclick={() => logout()}
 								>
 									<span>
@@ -191,9 +191,8 @@
 							{/if}
 						</AppBar.Trail>
 					</AppBar.Toolbar>
-					<AppBar.Headline>
-						<!-- 					<TimerCard /> -->
-						<p>timercard</p>
+					<AppBar.Headline class="flex justify-center py-4">
+						<TimerCard />
 					</AppBar.Headline>
 				</AppBar>
 			</header>
