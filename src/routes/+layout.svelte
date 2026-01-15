@@ -175,10 +175,7 @@
 		<div class="flex flex-col">
 			<header class="border-surface-200-800 border-b p-4">
 				<AppBar>
-					<AppBar.Toolbar class="flex w-full items-center justify-between">
-						<AppBar.Lead>
-							<img src="/logo4.png" alt="Pomo Farm" class="h-12" />
-						</AppBar.Lead>
+					<AppBar.Toolbar class="flex w-full items-center justify-end">
 						<AppBar.Trail class="flex items-center gap-6 text-lg">
 							{#if cUser.email}
 								<ul class="list">
@@ -243,11 +240,6 @@
 					{@render children()}
 				{/if}
 			</div>
-		</div>
-
-		<div class="card preset-filled-secondary-500 p-4" data-popup="popupHover">
-			<p>Logout</p>
-			<div class="preset-filled-secondary-500 arrow"></div>
 		</div>
 	</main>
 {/key}

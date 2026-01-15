@@ -22,8 +22,7 @@
 	<Navigation layout="sidebar" class="flex h-full flex-col">
 		<!-- Header -->
 		<Navigation.Header class="flex items-center gap-3 p-4">
-			<SproutIcon class="text-primary-500 h-8 w-8 stroke-current" />
-			<span class="text-xl font-bold">Pomo Farm</span>
+			<img src="/logo4.png" alt="Pomo Farm" class="h-10" />
 		</Navigation.Header>
 
 		<!-- Content -->
